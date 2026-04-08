@@ -15,7 +15,7 @@
     --c-cartier:#c0392b; --c-gucci:#6dba6d;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;}
+  body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;padding-bottom:40px;}
 
   .header{background:linear-gradient(135deg,var(--navy),var(--blue-1));border-bottom:1px solid var(--blue-2);padding:24px 44px 20px;}
   .header h1{font-family:'Playfair Display',serif;font-size:23px;font-weight:700;}
@@ -29,7 +29,6 @@
   .section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--blue-2),transparent);}
   .section-sub{font-size:10px;color:var(--muted);letter-spacing:.04em;}
 
-  /* KPI Cards */
   .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
   .kpi-card{background:linear-gradient(160deg,var(--blue-1),var(--steel-1));border:1px solid var(--blue-2);border-radius:11px;padding:16px 14px;position:relative;overflow:hidden;}
   .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:11px 11px 0 0;}
@@ -46,7 +45,6 @@
   .kpi-change.down{background:rgba(192,57,43,.15);color:#e05c4a;}
   .kpi-change.neutral{background:rgba(74,144,196,.15);color:var(--blue-4);}
 
-  /* Charts */
   .panel{background:linear-gradient(160deg,var(--blue-1),var(--navy));border:1px solid var(--blue-2);border-radius:13px;padding:22px 24px;}
   .panel-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;margin-bottom:3px;}
   .panel-subtitle{font-size:10px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;}
@@ -55,14 +53,12 @@
   .legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--blue-6);}
   .legend-dot{width:9px;height:9px;border-radius:50%;}
 
-  /* Time selector */
   .selector-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
   .time-selector{display:flex;background:var(--blue-1);border:1px solid var(--blue-2);border-radius:9px;padding:3px;}
-  .time-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:7px 22px;border-radius:7px;border:none;cursor:pointer;background:transparent;color:var(--muted);letter-spacing:.04em;transition:all .2s;}
+  .time-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:7px 18px;border-radius:7px;border:none;cursor:pointer;background:transparent;color:var(--muted);letter-spacing:.04em;transition:all .2s;}
   .time-btn.active{background:var(--blue-3);color:var(--white);}
   .time-btn:hover{background:var(--blue-2);}
 
-  /* Correlation matrix */
   .correlation-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px;}
   .corr-item{background:rgba(13,27,46,.5);border:1px solid var(--blue-2);border-radius:9px;padding:14px 16px;}
   .corr-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
@@ -73,6 +69,18 @@
   .corr-signal.mixed{background:rgba(232,160,32,.2);color:#e8a020;border:1px solid rgba(232,160,32,.3);}
   .corr-signal.weak{background:rgba(192,57,43,.2);color:#e05c4a;border:1px solid rgba(192,57,43,.3);}
   .corr-text{font-size:10px;color:var(--blue-6);line-height:1.5;}
+
+  .footer{background:linear-gradient(160deg,var(--steel-1),var(--blue-1));border:1px solid var(--blue-3);border-radius:13px;padding:24px 28px;margin-top:12px;}
+  .footer-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--accent);margin-bottom:12px;}
+  .footer-section{margin-bottom:16px;}
+  .footer-section:last-child{margin-bottom:0;}
+  .footer-heading{font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px;}
+  .footer-text{font-size:11px;color:var(--blue-6);line-height:1.7;margin-bottom:8px;}
+  .footer-list{margin-left:18px;margin-top:6px;}
+  .footer-list li{font-size:11px;color:var(--blue-6);line-height:1.6;margin-bottom:4px;}
+  .footer-example{background:rgba(13,27,46,.5);border-left:3px solid var(--accent);padding:10px 14px;margin-top:8px;border-radius:4px;}
+  .footer-example-title{font-size:10px;font-weight:600;color:var(--accent);margin-bottom:4px;}
+  .footer-example-text{font-size:10px;color:var(--blue-5);line-height:1.6;}
 
   .loading{text-align:center;padding:40px;color:var(--muted);font-size:12px;}
   .error{color:#e05c4a;padding:20px;background:rgba(192,57,43,.1);border-radius:8px;font-size:11px;}
@@ -104,8 +112,9 @@
 
     <div class="selector-row" style="margin-top:18px;">
       <div></div>
-      <div class="time-selector">
+      <div class="time-selector" id="chinaSelectorParent">
         <button class="time-btn active" onclick="setTrendsView('china','7d',this)">7 Days</button>
+        <button class="time-btn" onclick="setTrendsView('china','30d',this)">30 Days</button>
         <button class="time-btn" onclick="setTrendsView('china','12m',this)">12 Months</button>
       </div>
     </div>
@@ -140,8 +149,9 @@
 
     <div class="selector-row" style="margin-top:18px;">
       <div></div>
-      <div class="time-selector">
+      <div class="time-selector" id="globalSelectorParent">
         <button class="time-btn active" onclick="setTrendsView('global','7d',this)">7 Days</button>
+        <button class="time-btn" onclick="setTrendsView('global','30d',this)">30 Days</button>
         <button class="time-btn" onclick="setTrendsView('global','12m',this)">12 Months</button>
       </div>
     </div>
@@ -167,22 +177,83 @@
     <div class="section-header">
       <div class="section-label">Signal Analysis</div>
       <div class="section-line"></div>
-      <div class="section-sub">China vs Global comparison</div>
+      <div class="section-sub" id="correlationSubtitle">Comparing last 7 days: China vs Global</div>
     </div>
 
     <div class="panel">
       <div class="panel-title">Cross-Market Signals</div>
-      <div class="panel-subtitle">Comparing China search interest vs. global trends</div>
+      <div class="panel-subtitle" id="correlationPeriod">Based on 7-day trends</div>
       <div class="correlation-grid" id="correlationGrid">
         <div class="loading">Loading...</div>
       </div>
     </div>
   </div>
 
+  <!-- EXPLANATION FOOTER -->
+  <div class="footer">
+    <div class="footer-title">📊 How to Read This Dashboard</div>
+    
+    <div class="footer-section">
+      <div class="footer-heading">What is Google Trends Search Interest?</div>
+      <div class="footer-text">
+        Google Trends measures <strong>relative search popularity</strong> on a scale of 0-100, where 100 represents peak search interest for the selected time period and region. These are NOT absolute search volumes, but rather normalized scores that show the relative popularity of search terms.
+      </div>
+      <div class="footer-text">
+        <strong>Data Source:</strong> Search queries on Google from mainland China (geo='CN') and worldwide. Updated automatically daily at 3:00 AM UTC.
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <div class="footer-heading">Understanding the Numbers</div>
+      <ul class="footer-list">
+        <li><strong>Search Interest Score (0-100):</strong> Higher numbers = more search activity. A score of 68 means searches are at 68% of the peak level for that period.</li>
+        <li><strong>↑ Arrow Up (+%):</strong> Search interest INCREASED compared to the previous period (7 days ago, 30 days ago, or start of 12-month period).</li>
+        <li><strong>↓ Arrow Down (-%):</strong> Search interest DECREASED compared to the previous period.</li>
+        <li><strong>→ Flat (0%):</strong> No significant change in search interest.</li>
+      </ul>
+      
+      <div class="footer-example">
+        <div class="footer-example-title">Example Interpretation:</div>
+        <div class="footer-example-text">
+          <strong>Louis Vuitton: 68 ↑ +19.3%</strong><br>
+          Current search interest is at 68/100 (high). Searches increased by 19.3% compared to the start of the period. This suggests growing consumer interest in the brand.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <div class="footer-heading">What Does This Measure & Why It Matters</div>
+      <div class="footer-text">
+        <strong>Proxy for Consumer Interest:</strong> Search volume is a leading indicator of purchase intent. When more people search for "Louis Vuitton" or "爱马仕" (Hermès), it often precedes increased store visits and sales.
+      </div>
+      <div class="footer-text">
+        <strong>For LVMH Stock Analysis:</strong> Rising search trends in China (especially for LV, Dior) may indicate strengthening demand before it shows up in quarterly earnings. Declining trends may signal weakening interest. Combine with other indicators like WeChat Index and NPS for stronger signals.
+      </div>
+      <div class="footer-text">
+        <strong>Important Caveats:</strong> 
+      </div>
+      <ul class="footer-list">
+        <li>Ultra-luxury buyers (Hermès Birkin, high jewelry) often don't "search" - they buy directly. Low search volume doesn't always mean low sales.</li>
+        <li>Spikes can be driven by news, controversies, or price changes - not just purchase intent. Always investigate sudden changes.</li>
+        <li>Google has only ~3% market share in China, so this captures primarily VPN users and high-income consumers (actually a relevant demographic for luxury).</li>
+        <li>This is one data point among many. Use alongside WeChat Index, NPS scores, and official earnings reports.</li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <div class="footer-heading">Signal Strength Guide</div>
+      <ul class="footer-list">
+        <li><strong>✓ Strong Buy Signal:</strong> Both China AND Global trends rising (coordinated global demand).</li>
+        <li><strong>⚡ China-Specific Strength:</strong> China rising while Global flat/down (China market outperforming).</li>
+        <li><strong>⚠ Mixed Signal:</strong> One market up, one down (regional divergence - investigate why).</li>
+        <li><strong>✗ Weak Signal:</strong> Both markets declining (broad softness in consumer interest).</li>
+      </ul>
+    </div>
+  </div>
+
 </div>
 
 <script>
-// Configuration
 const BRANDS = {
   lv: { name: 'Louis Vuitton', color: '#5b9bd5', keywords: { cn: 'LV', en: 'Louis Vuitton' } },
   dior: { name: 'Dior', color: '#e74c3c', keywords: { cn: '迪奥', en: 'Dior' } },
@@ -191,14 +262,11 @@ const BRANDS = {
   gucci: { name: 'Gucci', color: '#6dba6d', keywords: { cn: 'Gucci', en: 'Gucci' } }
 };
 
-// Global data storage
 let trendsData = null;
-
-// Chart instances
 let chartChina = null;
 let chartGlobal = null;
+let currentPeriod = '7d'; // Track current period for correlation
 
-// Chart configuration
 const chartConfig = {
   type: 'line',
   options: {
@@ -227,10 +295,8 @@ const chartConfig = {
   }
 };
 
-// Load trends data
 async function loadTrendsData() {
   try {
-    // Replace with your GitHub raw URL after setup
     const response = await fetch('https://raw.githubusercontent.com/dlopezandres19-pixel/luxury-trends-tracker/main/trends_data.json');
     
     if (!response.ok) {
@@ -239,7 +305,6 @@ async function loadTrendsData() {
     
     trendsData = await response.json();
     
-    // Update last update time
     const lastUpdate = new Date(trendsData.metadata.last_update);
     document.getElementById('lastUpdate').textContent = 
       `Last updated: ${lastUpdate.toLocaleString('en-US', { 
@@ -247,22 +312,18 @@ async function loadTrendsData() {
         hour: '2-digit', minute: '2-digit' 
       })}`;
     
-    // Initialize charts
     initCharts();
-    
-    // Render initial view (7 days)
     renderTrendsView('china', '7d');
     renderTrendsView('global', '7d');
-    renderCorrelation();
+    renderCorrelation('7d');
     
   } catch (error) {
     console.error('Error loading trends data:', error);
     document.getElementById('trendsKpiChina').innerHTML = 
-      '<div class="error">Error loading data. Please check console.</div>';
+      '<div class="error">Error loading data. Please check that trends_data.json exists in your repository.</div>';
   }
 }
 
-// Initialize charts
 function initCharts() {
   const ctxChina = document.getElementById('chartTrendsChina').getContext('2d');
   const ctxGlobal = document.getElementById('chartTrendsGlobal').getContext('2d');
@@ -271,7 +332,6 @@ function initCharts() {
   chartGlobal = new Chart(ctxGlobal, chartConfig);
 }
 
-// Render trends view
 function renderTrendsView(region, period) {
   if (!trendsData || !trendsData[region] || !trendsData[region][period]) {
     console.error(`No data for ${region} ${period}`);
@@ -334,29 +394,48 @@ function renderTrendsView(region, period) {
   chart.update();
   
   // Update subtitle
-  const subtitle = period === '7d' ? 'Last 7 days' : 'Last 12 months';
+  const periodNames = {
+    '7d': 'Last 7 days',
+    '30d': 'Last 30 days',
+    '12m': 'Last 12 months'
+  };
+  const subtitle = periodNames[period] || period;
   document.getElementById(region === 'china' ? 'trendsChinaSub' : 'trendsGlobalSub').textContent = subtitle;
 }
 
-// Set trends view
 function setTrendsView(region, period, button) {
-  // Update button active state
-  const buttons = button.parentElement.querySelectorAll('.time-btn');
+  // Update button active state for the specific region
+  const selectorParent = region === 'china' ? 'chinaSelectorParent' : 'globalSelectorParent';
+  const buttons = document.getElementById(selectorParent).querySelectorAll('.time-btn');
   buttons.forEach(b => b.classList.remove('active'));
   button.classList.add('active');
   
   // Render view
   renderTrendsView(region, period);
+  
+  // Update current period and re-render correlation
+  currentPeriod = period;
+  renderCorrelation(period);
 }
 
-// Render correlation analysis
-function renderCorrelation() {
-  if (!trendsData || !trendsData.china['7d'] || !trendsData.global['7d']) {
+function renderCorrelation(period) {
+  if (!trendsData || !trendsData.china[period] || !trendsData.global[period]) {
     return;
   }
   
-  const chinaData = trendsData.china['7d'].latest;
-  const globalData = trendsData.global['7d'].latest;
+  const chinaData = trendsData.china[period].latest;
+  const globalData = trendsData.global[period].latest;
+  
+  // Update correlation subtitle and period
+  const periodNames = {
+    '7d': { short: '7-day', long: 'last 7 days' },
+    '30d': { short: '30-day', long: 'last 30 days' },
+    '12m': { short: '12-month', long: 'last 12 months' }
+  };
+  
+  const periodInfo = periodNames[period] || { short: period, long: period };
+  document.getElementById('correlationSubtitle').textContent = `Comparing ${periodInfo.long}: China vs Global`;
+  document.getElementById('correlationPeriod').textContent = `Based on ${periodInfo.short} trends`;
   
   let html = '';
   
@@ -379,23 +458,23 @@ function renderCorrelation() {
       if (chinaUp && globalUp) {
         signal = '✓ Strong Buy Signal';
         signalClass = 'strong';
-        text = `Both China (${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%) and global (${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%) interest rising. Coordinated demand.`;
+        text = `Both China (${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%) and global (${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%) interest rising. Coordinated demand across markets.`;
       } else if (chinaDown && globalDown) {
         signal = '✗ Weak Signal';
         signalClass = 'weak';
-        text = `Declining in both China (${chinaLatest.change.toFixed(1)}%) and global (${globalLatest.change.toFixed(1)}%). Broad softness.`;
+        text = `Declining in both China (${chinaLatest.change.toFixed(1)}%) and global (${globalLatest.change.toFixed(1)}%). Broad softness in consumer interest.`;
       } else if (chinaUp && !globalUp) {
         signal = '⚡ China Focus';
         signalClass = 'mixed';
-        text = `China rising (${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%) while global ${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%. China-specific strength.`;
+        text = `China rising (${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%) while global ${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%. China-specific strength - monitor for sustained momentum.`;
       } else if (globalUp && !chinaUp) {
         signal = '⚠ Global Strength, China Lag';
         signalClass = 'mixed';
-        text = `Global up (${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%), China ${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%. Monitor China closely.`;
+        text = `Global up (${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%), China ${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%. China underperforming - investigate regional headwinds.`;
       } else {
         signal = '→ Neutral';
         signalClass = 'mixed';
-        text = `China ${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%, Global ${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%. Mixed signals.`;
+        text = `China ${chinaLatest.change > 0 ? '+' : ''}${chinaLatest.change.toFixed(1)}%, Global ${globalLatest.change > 0 ? '+' : ''}${globalLatest.change.toFixed(1)}%. Mixed signals - wait for clearer trend direction.`;
       }
       
       html += `
@@ -414,7 +493,6 @@ function renderCorrelation() {
   document.getElementById('correlationGrid').innerHTML = html;
 }
 
-// Initialize on load
 window.addEventListener('DOMContentLoaded', loadTrendsData);
 </script>
 

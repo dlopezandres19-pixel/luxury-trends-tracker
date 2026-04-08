@@ -1,0 +1,37 @@
+name: Update Google Trends Data
+
+on:
+  schedule:
+    # Runs every day at 3:00 AM UTC (11:00 AM Beijing time)
+    - cron: '0 3 * * *'
+  
+  # Allows manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  update-trends:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install pytrends pandas
+      
+      - name: Fetch Google Trends data
+        run: |
+          python fetch_trends.py
+      
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+          git add trends_data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update trends data - $(date +'%Y-%m-%d %H:%M:%S')" && git push)

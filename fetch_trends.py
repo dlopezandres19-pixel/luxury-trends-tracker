@@ -3,6 +3,7 @@
 Google Trends Data Fetcher for Luxury Brands
 Tracks: Louis Vuitton, Dior, Hermès, Gucci, Cartier
 Regions: China (primary focus) + Global (comparison)
+Updated: Now includes 7 days, 30 days, and 12 months
 """
 
 from pytrends.request import TrendReq
@@ -27,7 +28,7 @@ def fetch_trends_data(keywords, timeframe, geo='', label=''):
     
     Args:
         keywords: List of search terms
-        timeframe: Time period (e.g., 'now 7-d', 'today 12-m')
+        timeframe: Time period (e.g., 'now 7-d', 'today 1-m', 'today 12-m')
         geo: Geographic region code (e.g., 'CN' for China, '' for global)
         label: Label for this dataset
     
@@ -66,7 +67,9 @@ def fetch_trends_data(keywords, timeframe, geo='', label=''):
         data['latest'] = {}
         for col in df.columns:
             latest_val = float(df[col].iloc[-1])
-            prev_val = float(df[col].iloc[-8] if len(df) > 7 else df[col].iloc[0])  # Compare to 7 days ago
+            # For 7d: compare to 7 days ago, for 30d: compare to 30 days ago, for 12m: compare to start
+            lookback = min(7, len(df) - 1) if 'now 7-d' in timeframe else min(30, len(df) - 1) if 'today 1-m' in timeframe else len(df) - 1
+            prev_val = float(df[col].iloc[-lookback-1] if len(df) > lookback else df[col].iloc[0])
             change = ((latest_val - prev_val) / prev_val * 100) if prev_val > 0 else 0
             
             data['latest'][col] = {
@@ -106,15 +109,23 @@ def main():
     keywords_en = [BRANDS[b]['en'] for b in BRANDS.keys()]
     
     # CHINA - Last 7 days
-    print("\n[1/4] China - Last 7 days")
+    print("\n[1/6] China - Last 7 days")
     print("-" * 70)
     data = fetch_trends_data(keywords_cn, 'now 7-d', 'CN', 'China 7d')
     if data:
         output['china']['7d'] = data
         time.sleep(2)  # Rate limiting
     
+    # CHINA - Last 30 days
+    print("\n[2/6] China - Last 30 days")
+    print("-" * 70)
+    data = fetch_trends_data(keywords_cn, 'today 1-m', 'CN', 'China 30d')
+    if data:
+        output['china']['30d'] = data
+        time.sleep(2)
+    
     # CHINA - Last 12 months
-    print("\n[2/4] China - Last 12 months")
+    print("\n[3/6] China - Last 12 months")
     print("-" * 70)
     data = fetch_trends_data(keywords_cn, 'today 12-m', 'CN', 'China 12m')
     if data:
@@ -122,15 +133,23 @@ def main():
         time.sleep(2)
     
     # GLOBAL - Last 7 days
-    print("\n[3/4] Global - Last 7 days")
+    print("\n[4/6] Global - Last 7 days")
     print("-" * 70)
     data = fetch_trends_data(keywords_en, 'now 7-d', '', 'Global 7d')
     if data:
         output['global']['7d'] = data
         time.sleep(2)
     
+    # GLOBAL - Last 30 days
+    print("\n[5/6] Global - Last 30 days")
+    print("-" * 70)
+    data = fetch_trends_data(keywords_en, 'today 1-m', '', 'Global 30d')
+    if data:
+        output['global']['30d'] = data
+        time.sleep(2)
+    
     # GLOBAL - Last 12 months
-    print("\n[4/4] Global - Last 12 months")
+    print("\n[6/6] Global - Last 12 months")
     print("-" * 70)
     data = fetch_trends_data(keywords_en, 'today 12-m', '', 'Global 12m')
     if data:

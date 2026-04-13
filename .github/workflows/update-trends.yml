@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pytrends==4.9.2 pandas requests
+          pip install pytrends==4.9.2 pandas requests==2.28.2 urllib3==1.26.15
 
       - name: Fetch Google Trends data
         run: |

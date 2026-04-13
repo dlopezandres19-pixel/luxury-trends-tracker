@@ -3,7 +3,7 @@ name: Update Google Trends Data
 on:
   schedule:
     # Runs every day at 3:00 AM UTC (11:00 AM Beijing time)
-    - cron: '0 3 * * *'  # Runs at 03:00
+    # - cron: '0 3 * * *'
 
   # Allows manual trigger from GitHub Actions tab
   workflow_dispatch:

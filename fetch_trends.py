@@ -32,14 +32,7 @@ def fetch_trends_data(keywords, timeframe, geo='', label=''):
                 tz=360,
                 timeout=(10, 25),
                 retries=3,
-                backoff_factor=0.5,
-                requests_args={
-                    'headers': {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-                        'Accept-Language': 'en-US,en;q=0.9',
-                        'Accept-Encoding': 'gzip, deflate, br',
-                    }
-                }
+                backoff_factor=0.5
             )
             pytrends.build_payload(keywords, timeframe=timeframe, geo=geo)
             
